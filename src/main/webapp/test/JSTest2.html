@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+*{font-weight: bold;}
+</style>
+</head>
+<body>
+	<div>
+		记录列表<br><br>姓名：
+		<input type="text" name='name' placeholder="姓名"/>
+		<br>性别：
+		<label><input type="radio" name='sex' value='男' checked>男</label>
+		<label><input type="radio" name='sex' value='女'>女</label>
+		<br>爱好：
+		<label><input type="checkbox" name='hobby' value='跑步'>跑步</label>
+		<label><input type="checkbox" name='hobby' value='游泳'>游泳</label>
+        <label><input type="checkbox" name='hobby' value='羽毛球'>羽毛球</label>
+        <br>地址：
+		<select name='addr'>
+		  <option value='北京'>北京</option>
+		  <option value='上海'>上海</option>
+		  <option value='天津'>天津</option>
+		</select>
+ 	    <br><textarea rows="10" cols="20">sdfghjkl</textarea> 
+		<br><button onclick="testadd2()">添加</button><br><br>
+		
+		姓名：<input type="text" name='name2' placeholder="姓名"/>
+		地址：<select name='addr2'>
+		  <option value=''>全部</option>
+          <option value='北京'>北京</option>
+          <option value='上海'>上海</option>
+          <option value='天津'>天津</option>
+        </select>
+        <button onclick="testselect2()">搜索</button><br><br>
+		<table style="border: 1px solid black;width:800px;">
+			<thead>
+				<tr>
+					<th style="width: 5%; text-align: left">ID</th>
+					<th style="width: 25%;text-align: left">姓名</th>
+					<th style="width: 10%;text-align: left">性别</th>
+					<th style="width: 35%;text-align: left">爱好</th>
+					<th style="width: 10%;text-align: left">地址</th>
+					<th style="width: 15%;text-align: left">操作</th>
+				</tr>
+			</thead>
+			<tbody id="tbody"></tbody>
+		</table>
+	</div>
+	<script type="text/javascript">
+	var vId2 = 1;
+	function testadd2(){
+		var name = document.getElementsByName('name')[0].value;
+	    var sexs = document.getElementsByName('sex');
+	    var sex_val = sexs[0].checked?sexs[0].value:sexs[1].value;
+	    var hobbys = document.getElementsByName('hobby');
+	    var hobby_val = '';
+	    for(var i=0;i<hobbys.length;i++){
+	        var d = hobbys[i];
+	        if(d.checked){
+	            hobby_val += (d.value+' ');
+	        }
+	    }
+// 	    alert(hobby_val);return;
+	    var addr = document.getElementsByName('addr')[0].value;
+	    //<tr id='tr1'><td id='td11'>1</td><td id='td21'>aa</td></tr>
+	    var html = '<tr id="tr'+ vId2 +'">';
+	    html += '<td id="td1'+ vId2 +'">'+ vId2 + '</td>';
+	    html += '<td id="td2'+ vId2 +'">'+ name + '</td>';
+	    html += '<td id="td3'+ vId2 +'">'+ sex_val + '</td>';
+	    html += '<td id="td4'+ vId2 +'">'+ hobby_val + '</td>';
+	    html += '<td id="td5'+ vId2 +'">'+ addr + '</td>';
+	    var a1 = '<a href="javascript:testdelete2('+ vId2 +')">删除</a>&nbsp;&nbsp;';
+	    a1 += '<a href="javascript:testupdate2('+ vId2 +')">修改</a>';
+	    html += '<td id="td6'+ vId2 +'">'+ a1 +'</td></tr>';
+// 	    alert(html);
+	    document.getElementById('tbody').innerHTML=
+	    	  document.getElementById('tbody').innerHTML+html;
+	    vId2++;
+	}
+	function testdelete2(id){
+		var tr = document.getElementById('tr'+id);
+		if(confirm('是否删除此行')){
+		    document.getElementById('tbody').removeChild(tr);
+		}
+	}
+	function testupdate2(id){
+		var td2 = document.getElementById('td2'+id);
+		td2.innerHTML="<input type='text' id='tname"+id+"' value='"+td2.innerHTML+"'/>"
+		
+		var td3 = document.getElementById('td3'+id);
+		var sex1 = '';var sex2 = '';
+		if(td3.innerHTML=='男'){
+			sex1='checked';
+		}else{
+			sex2='checked';
+		}
+		var t1 = "<label><input type='radio' name='sex"+id+"' "+sex1+" value='男'>男</label>";
+		t1 += "<label><input type='radio' name='sex"+id+"' "+sex2+" value='女'>女</label>";
+		td3.innerHTML=t1;
+		
+		var td4 = document.getElementById('td4'+id);
+		var hobbys=td4.innerHTML;
+		var hobby1=hobbys.indexOf('跑步')>-1?'checked':'';
+		var hobby2=hobbys.indexOf('游泳')>-1?'checked':'';
+		var hobby3=hobbys.indexOf('羽毛球')>-1?'checked':'';
+		var t2 = "<label><input type='checkbox' name='hobby"+id+"' "+hobby1+" value='跑步'>跑步</label>";
+        t2 += "<label><input type='checkbox' name='hobby"+id+"' "+hobby2+" value='游泳'>游泳</label>";
+        t2 += "<label><input type='checkbox' name='hobby"+id+"' "+hobby3+" value='羽毛球'>羽毛球</label>";
+		td4.innerHTML=t2;
+		
+        var td5 = document.getElementById('td5'+id);
+        var td5val = td5.innerHTML;
+        var addr1=td5val=='北京'?'selected':'';
+        var addr2=td5val=='上海'?'selected':'';
+        var addr3=td5val=='天津'?'selected':'';
+        var t3 = "<select name='addr2"+id+"'>";
+        t3+="<option value='北京' "+addr1+">北京</option>";
+        t3+="<option value='上海' "+addr2+">上海</option>";
+        t3+="<option value='天津' "+addr3+">天津</option></select>";
+        td5.innerHTML=t3;
+        
+        var td6 = document.getElementById('td6'+id);
+        td6.innerHTML="<a href='javascript:save("+id+")'>保存</a>";
+	}
+	function save(id){
+		var name = document.getElementById('tname'+id).value;
+        var sexs = document.getElementsByName('sex'+id);
+        var sex_val = sexs[0].checked?sexs[0].value:sexs[1].value;
+        var hobbys = document.getElementsByName('hobby'+id);
+        var hobby_val = '';
+        for(var i=0;i<hobbys.length;i++){
+            var d = hobbys[i];
+            if(d.checked){
+                hobby_val += (d.value+' ');
+            }
+        }
+        var addr = document.getElementsByName('addr2'+id)[0].value;
+        
+        document.getElementById('td2'+id).innerHTML=name;
+        document.getElementById('td3'+id).innerHTML=sex_val;
+        document.getElementById('td4'+id).innerHTML=hobby_val;
+        document.getElementById('td5'+id).innerHTML=addr;
+        var a1 = '<a href="javascript:testdelete2('+id+')">删除</a>&nbsp;&nbsp;';
+        a1 += '<a href="javascript:testupdate2('+id+')">修改</a>';
+        document.getElementById('td6'+id).innerHTML=a1;
+	}
+	function testselect2(){
+	    var rows = document.getElementsByTagName("tr");
+	    var len = rows.length;
+	    for(var i=1;i<len;i++){
+	        rows[i].removeAttribute('style');
+	    }
+	    var i2 = document.getElementsByName('name2')[0].value;
+	    var i3 = document.getElementsByName('addr2')[0].value;
+	    for(var i=1;i<len;i++){
+	        var name=rows[i].cells[1].innerHTML;
+	        var addr=rows[i].cells[4].innerHTML;
+	        var b1 = false;
+	        var b2 = false;
+            if (i2=='' || name.indexOf(i2)>-1) {
+                b1 = true;
+            }
+            if (i3=='' || addr==i3) {
+                b2 = true;
+            }
+            if (b1 && b2) {
+            	rows[i].style.backgroundColor = "red";
+            }
+	    }
+	}
+	</script>
+</body>
+</html>

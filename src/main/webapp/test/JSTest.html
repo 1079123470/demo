@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+*{font-weight: bold;}
+</style>
+<script type="text/javascript">
+var vInput=document.getElementsByTagName('input');
+var vTbody=document.getElementById('tbody');
+var vId = 1;
+function testadd(){
+	var i0 = vInput[0].value;
+	var i1 = vInput[1].value;
+    if(i0==''||i1==""||/\d+/.test(i0)||/\D+/.test(i1)) {
+        alert('准确填写后才能添加');//alert(isNaN(i0));return;
+        return;
+    }
+    var oTr=document.createElement('tr');//<tr></tr>
+//     oTr.style.backgroundColor='blue';
+    
+    var oTd=document.createElement('td');//<td></td>
+    oTd.innerHTML=vId++;//<td>1</td>
+    oTr.appendChild(oTd);//<tr><td>1</td></tr>
+    
+    oTd=document.createElement('td');//<td></td>
+    oTd.innerHTML=i0;//<td>i0</td>
+    oTr.appendChild(oTd);//<tr><td>1</td><td>i0</td></tr>
+    
+    oTd=document.createElement('td');//<td></td>
+    oTd.innerHTML=i1;//<td>i1</td>
+    oTr.appendChild(oTd);//<tr><td>1</td><td>i0</td><td>i1</td></tr>
+    
+    oTd=document.createElement('td');//<td></td>
+    oTd.innerHTML='<a href="javascript:;">删除</a>&nbsp;&nbsp;<a href="javascript:;">修改</a>';
+    //<td><a href="javascript:;">删除</a>&nbsp;&nbsp;<a href="javascript:;">修改</a></td>
+    var atag = oTd.getElementsByTagName('a');
+    atag[0].onclick=testdelete;
+    atag[1].onclick=testupdate;
+    oTr.appendChild(oTd);
+    
+    document.getElementById('tbody').appendChild(oTr);
+//     document.getElementById('tbody').innerHTML=
+// 	    document.getElementById('tbody').innerHTML+
+//     	"<tr><td>"+ vId++ +"</td><td>"+i0+"</td><td>"+i1+"</td><td>"+
+//     	"<a href='javascript:testdelete()'>删除</a>&nbsp;&nbsp;"+
+//      "<a href='javascript:testupdate()'>修改</a></td></tr>";
+}
+var testdelete=function (){
+    var temp = this.parentNode.parentNode;
+    temp.style.backgroundColor='yellow';
+//     var toDelete=confirm('是否删除此行');
+    if(confirm('是否删除此行')){
+    	document.getElementById('tbody').removeChild(temp);
+//     	tbody.removeChild(temp);
+    } else {
+        temp.removeAttribute('style');
+//         temp.style.backgroundColor='blue';
+    }
+}
+function testupdate(){
+	var thistd = this.parentNode;
+	var tAge = thistd.previousSibling;
+	var tName = tAge.previousSibling;
+	var tId = tName.previousSibling.innerHTML;
+	//tAge.innerHTML="<input type='text' id='tAge1' value='AAA'/>"
+    // 	var a = 2;	a = 1+a+3;
+	tAge.innerHTML="<input type='text' id='tAge"+tId+"' value='"+tAge.innerHTML+"'/>";
+	tName.innerHTML="<input type='text' id='tName"+tId+"' value='"+tName.innerHTML+"'/>";
+	thistd.innerHTML="<a href='javascript:;'>保存</a>";
+	thistd.getElementsByTagName('a')[0].onclick=function(){
+		tAge.innerHTML=document.getElementById('tAge'+tId).value;
+		tName.innerHTML=document.getElementById('tName'+tId).value;
+		thistd.innerHTML='<a href="javascript:;">删除</a>&nbsp;&nbsp;<a href="javascript:;">修改</a>';
+	    var atag = thistd.getElementsByTagName('a');
+	    atag[0].onclick=testdelete;
+	    atag[1].onclick=testupdate;
+	};
+}
+function testselect(){
+	var rows = document.getElementsByTagName("tr");
+	var len = rows.length;
+	for(var i=1;i<len;i++){
+		rows[i].removeAttribute('style');
+	}
+	var i2 = vInput[2].value;
+	if(i2==''){
+		return;
+	}
+	for(var i=1;i<len;i++){
+        var oTab=rows[i].cells[1].innerHTML;
+        if(oTab.indexOf(i2)>-1){//oTab == i2
+        	rows[i].style.backgroundColor = "red"
+        }
+    }
+}
+</script>
+</head>
+<body>
+	<div>
+		记录列表<br><br>
+		姓名：<input type="text" placeholder="必填非数字"/> 
+		年龄：<input type="text" placeholder="必填数字"/>
+		<button onclick="testadd()">添加</button><br><br>
+		姓名：<input type="text" placeholder="姓名"/>
+        <button onclick="testselect()">搜索</button><br><br>
+		<table style="border: 1px solid black;width:600px;">
+			<thead>
+				<tr>
+					<th style="width: 15%;text-align: left">ID</th>
+					<th style="width: 30%;text-align: left">姓名</th>
+					<th style="width: 30%;text-align: left">年龄</th>
+					<th style="width: 25%;text-align: left">操作</th>
+				</tr>
+			</thead>
+			<tbody id="tbody"></tbody>
+		</table>
+	</div>
+</body>
+</html>

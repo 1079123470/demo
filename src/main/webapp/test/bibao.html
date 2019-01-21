@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+ function s1(){
+  var a=0;
+  function s2(){
+    a++;
+    alert(a);
+   }
+   return s2;
+}
+function tt()
+{
+  var ss=s1();
+  alert(typeof ss);
+  var w=ss();
+  alert(ss);
+  alert(ss());
+}
+</script>
+<!-- <script type="text/javascript">
+var t=NaN;//0 -0 null '' false
+if(t);//记住七个值
+</script> -->
+<!-- alert(p["first name"])//当使用带有特殊字符的对象时 加“”-->
+<!--DOM:Document  -->
+<script>
+ function textdom(){
+	 var a1= document.getElementById("aa");
+	 var a2= document.getElementsByName("bb");
+	 var a3= document.getElementsByTagName("cc");
+	 var a4= document.getElementsByClassName("dd");
+	 alert(a1.innerHTML);
+	 alert(a1.innerTEXT);
+ }
+</script>
+ </head>
+<body>
+    <button onclick="tt()" >t1</button>
+    <button onclick="textdom()">xx</button>
+</body>
+</html>

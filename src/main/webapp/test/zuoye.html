@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="../../../js/jquery-3.3.1.js"></script>
+<script type="text/javascript">
+//$(AAA).BBB(CCC)
+  var vInput=document.getElementsByTagName('input');
+  var vTbody=document.getElementById('tbody');
+  var vId=1;
+  function textadd(){
+	  var i0=vInput[0].value;
+	  var i6=vInput[6].value;
+	  if(i0==''||i6==""||/\d+/.test(i0)||/\D+/.test(i6)){
+		  alert('准确填写后才能添加');
+		  return;
+	  }
+ 	  var oTr=document.createElement('tr');
+	  var oTd=document.createElement('td');
+      oTd.innerHTML=vId++;
+	  oTr.appendChild(oTd);
+	  
+	  oTd=document.createElement('td');
+	  oTd.innerHTML=i0;
+	  oTr.appendChild(oTd);
+	  
+	  oTd=document.createElement('td');
+	  oTd.innerHTML=i6;
+	  oTr.appendChild(oTd);
+	  
+	  oTd=document.createElement('td');
+      oTd.innerHTML='<a href="#">删除</a>&nbsp;<a href="#">修改</a>';
+      
+      var atag=oTd.getElementsByTagName('a');
+      atag[0].onclick=testdelete;
+      atag[1].onclick=testupdate;
+      oTr.appendChild(oTd);
+      
+      document.getElementById('tbody').appendChild(oTr);
+      
+
+  }
+ /* var vId2=1;
+  function testadd2(){
+	  var name=document.getElementsByName('name')[0].value;
+	  var sexs=document.getElementsByName('sex');
+	  var sex_val=sexs[0].checked?sexs[0].value:sexs[1].value;
+	  var hobbys=document.getElementsByName('hobby');
+	  var hobby_val='';
+	  for(var i=0;i<hobbys.length;i++){
+          var d=hobbys[i];
+	      if(d.checked){
+	    	 hobby_val+=(d.value+' ');
+	     }
+	  }
+	  var addr=document.getElementsByName('addr')[0].value;
+	  var html='<tr id="td1'+vId2+'">'+vId2+'</td>';
+	  var html='<tr id="td2'+vId2+'">'+name+'</td>';
+	  var html='<tr id="td3'+vId2+'">'+sex_val+'</td>';
+	  var html='<tr id="td4'+vId2+'">'+hobby_val+'</td>';
+	  var html='<tr id="td5'+vId2+'">'+addr+'</td>';
+	  var a1='<a href="javascript:testdelect2('+vId2+')">删除</a>&nbsp';
+	  a1+='<a href="javascript:testupdate2('+vId2+')">修改</a>';
+	  html+='<td id="td6'+vId2+'">'+a1+'</td></tr>';
+	  //alert(html);
+	  document.getElementById('tbody').innerHTML=
+		  document.getElementById('tbody').innerHTML+html;
+	  vId2++;
+  }*/
+  
+  var testdelete=function(){
+	  var temp=this.parentNode.parentNode;
+	  temp.style.backgroundColor="yellow";
+	  if(confirm("是否删除此行")){
+		  document.getElementById("tbody").removeChild(temp);
+	  }else{
+		  temp.removeAttribute('style');
+	  }
+	  
+  }
+  function testupdate(){
+	  var thistd=this.parentNode;
+	  var tAge=thistd.previousSibling;
+	  var tName=tAge.previousSibling;
+	  var tId=tName.previousSibling.innerHTML;
+	  //tAge.innerHTML="<input type='text' id='tAge1' value='AAA'/>"
+	  // var a=2; a=1+a+3;
+	  tAge.innerHTML="<input type='text' id='tAge"+tId+"' value='"+tAge.innerHTML+"'/>";
+	  tName.innerHTML="<input type='text' id='tName"+tId+"' value='"+tName.innerHTML+"'/>";
+	  thistd.innerHTML="<a href='javascript:;'>保存</a>";
+	  thistd.getElementsByTagName('a')[0].onclick=function(){
+		  tAge.innerHTML=document.getElementById('tAge'+tId).value;
+		  tName.innerHTML=document.getElementById('tName'+tId).value;
+		  thistd.innerHTML='<a href="javascript:;">删除</a>&nbsp;&nbsp;<a href="javascript:;">修改</a>';
+		  var atag=thistd.getElementsByTagName('a');
+		  atag[0].onclick=testdelete;
+		  atag[1].onclick=testupdate;
+		  
+	  } 
+  }
+  function textselect(){
+	  var rows=document.getElementsByTagName("tr");
+	  var len=rows.length;
+	  for(var i=1;i<len;i++)
+      {
+		rows[i].removeAttribute('style');
+	  }
+	  var i2=vInput[2].value;
+	  if(i2==''){return;}
+	  for(var i=1;i<len;i++)
+	 {
+		   var oTab=rows[i].cells[1].innerHTML;
+		   if(oTab.indexOf(i2)>-1){
+			   //oTab==i2
+			   rows[i].style.backgroundColor="red"
+		   }
+     }
+  }
+</script>
+</head>
+<body>
+
+   <div>
+       记录列表<br><br>
+       姓名:<input type="text"/><br>
+       性别: <input type="radio" name='sex' id="sex1"  value="1">
+    <label for='sex1'>男</label>
+    <input type="radio" checked name="sex" value="2">女<br>
+        爱好:<input type="checkbox" checked name="hobby" value="2">跑步
+    <input type="checkbox" checked name="hobby" value="2">游泳
+     <input type="checkbox" checked name="hobby" value="2">羽毛球<br>
+       年龄:<input type="text" placeholder="必填数字"/><br>
+       地址:
+    <select name="sel">
+       <option value="1">北京</option>
+       <option value="2">上海</option>
+       <option selected value="3">青岛</option>
+   </select>
+   <button onclick="textadd()">添加</button><br><br>
+    <textarea name="comment" rows="5" cols="20"></textarea><br><br>
+    <!-- 姓名:<input type="text" placeholder="姓名"/> -->
+       姓名:<input type="text" placeholder="姓名"/>
+    <button onclick="textselect()">搜索</button><br><br>
+      <!--  地址:
+    <select name="addr">
+       <option checked >全部</option>
+       <option value="北京">北京</option>
+       <option value="上海">上海</option>
+       <option  value="青岛">青岛</option>
+   </select> -->
+    <table style="border:1px solid black;width:800px;">
+      <thead>
+        <tr>
+              <th style="width: 20%;text-align: left">ID</th>
+              <th style="width: 25%;text-align: left">姓名</th>   
+              <th style="width: 25%;text-align: left">年龄</th>  
+              <th style="width: 30%;text-align: left">操作</th>
+        </tr>
+       </thead>
+       <tbody id="tbody"></tbody>
+     </table>
+   </div>
+
+</body>
+</html>

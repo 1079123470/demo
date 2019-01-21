@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">*{font-weight: bold;}</style>
+<script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
+</head>
+<body>
+	<div>
+	<form name='fa'>
+		记录列表<br><br>
+		姓名：<input type="text" name='name' placeholder="姓名"/>
+		<br>性别：
+		<label><input type="radio" name='sex' value='男' checked>男</label>
+		<label><input type="radio" name='sex' value='女'>女</label>
+		<br>爱好：
+		<label><input type="checkbox" name='hobby' value='跑步'>跑步</label>
+		<label><input type="checkbox" name='hobby' value='游泳'>游泳</label>
+        <label><input type="checkbox" name='hobby' value='羽毛球'>羽毛球</label>
+        <br>地址：
+		<select name='addr'>
+		  <option value='北京'>北京</option>
+		  <option value='上海'>上海</option>
+		  <option value='天津'>天津</option>
+		</select>
+	</form>    
+		<br><button onclick="testadd2()">添加</button><br><br>
+	<form name='fb'>
+		姓名：<input type="text" name='name2' placeholder="姓名"/>
+		地址：<select name='addr2'>
+		  <option value=''>全部</option>
+          <option value='北京'>北京</option>
+          <option value='上海'>上海</option>
+          <option value='天津'>天津</option>
+        </select>
+    </form>
+        <button onclick="testselect2()">搜索</button><br><br>
+		<table style="border: 1px solid black;width:800px;">
+			<thead>
+				<tr>
+					<th style="width: 5%; text-align: left">ID</th>
+					<th style="width: 25%;text-align: left">姓名</th>
+					<th style="width: 10%;text-align: left">性别</th>
+					<th style="width: 35%;text-align: left">爱好</th>
+					<th style="width: 10%;text-align: left">地址</th>
+					<th style="width: 15%;text-align: left">操作</th>
+				</tr>
+			</thead>
+			<tbody id="tbody"></tbody>
+		</table>
+	</div>
+	<script type="text/javascript">
+	var vId2 = 1;
+	function testadd2(){
+// 		var arr = $("form[name='fa']").serializeArray();//console.log(arr);
+// 		var name,sex_val,hobby_val='',addr;
+// 		$.each(arr,function(){
+// 			switch (this.name) {
+// 			case 'name':name = this.value;break;
+// 			case 'sex':sex_val = this.value;break;
+// 			case 'hobby':hobby_val += this.value+' ';break;
+// 			case 'addr':addr = this.value;
+// 			}
+// 		});
+// 		return;
+		
+		var name = $("input[name='name']").val();
+		var sex_val = $("input[name='sex']:checked").val();
+		var hobby_val = '';
+		$("input[name='hobby']:checked").each(function(){
+			hobby_val+=$(this).val()+' ';
+		});
+		var addr =$("select[name='addr']").val();
+
+		var html = '<tr id="tr'+vId2+'">';
+	    html += '<td id="td1'+vId2+'">'+vId2+'</td>';
+	    html += '<td id="td2'+vId2+'">'+name+'</td>';
+	    html += '<td id="td3'+vId2+'">'+sex_val+'</td>';
+	    html += '<td id="td4'+vId2+'">'+hobby_val+'</td>';
+	    html += '<td id="td5'+vId2+'">'+addr+'</td>';
+	    var a1 ='<a href="javascript:testdelete2('+vId2+')">删除</a>&nbsp;';
+	    a1 +='<a href="javascript:testupdate2('+vId2+')">修改</a>';
+	    html += '<td id="td6'+vId2+'">'+a1+'</td></tr>';
+	    $('#tbody').append(html);
+	    vId2++;
+	}
+	function testdelete2(id){
+	    if(confirm('是否删除此行')){
+	    	$('#tr'+id).remove();
+	    } 
+	}
+	function testupdate2(id){
+		var td2 = $('#td2'+id);
+		td2.html("<input type='text' id='tname"+id+"' value='"+td2.html()+"'/>");
+		
+		var td3 = $('#td3'+id);
+        var td3html = td3.html();
+		var t1 = "<label><input type='radio' name='sex"+id+"' value='男'>男</label>";
+        t1 += "<label><input type='radio' name='sex"+id+"' value='女'>女</label>";
+        td3.html(t1);
+        $("input[name='sex"+id+"'][value='"+td3html+"']").prop('checked',true);
+        
+        var td4 = $('#td4'+id);
+        var td4html = td4.html();
+        var t2 = "<label><input type='checkbox' name='hobby"+id+"' value='跑步'>跑步</label>";
+        t2 += "<label><input type='checkbox' name='hobby"+id+"' value='游泳'>游泳</label>";
+        t2 += "<label><input type='checkbox' name='hobby"+id+"' value='羽毛球'>羽毛球</label>";
+        td4.html(t2);
+        $.each( td4html.split(' '), function(i, n){
+        	$("input[name='hobby"+id+"'][value='"+n+"']").prop('checked',true);
+       	});
+        
+        var td5 = $('#td5'+id);
+        var td5html = td5.html();
+        var t3 = "<select name='addr2"+id+"'>";
+        t3+="<option value='北京'>北京</option>";
+        t3+="<option value='上海'>上海</option>";
+        t3+="<option value='天津'>天津</option></select>";
+        td5.html(t3);
+        $("select[name='addr2"+id+"']").val(td5html);
+		
+        $("#td6"+id).html("<a href='javascript:save("+id+")'>保存</a>");
+	}
+	function save(id){
+//      var arr = $('#tr'+id).serializeArray();//console.log(arr);
+//      var name,sex_val,hobby_val='',addr;
+//      $.each(arr,function(){
+//          switch (this.name) {
+//          case 'name':name = this.value;break;
+//          case 'sex':sex_val = this.value;break;
+//          case 'hobby':hobby_val += this.value+' ';break;
+//          case 'addr':addr = this.value;
+//          }
+//      });
+//      return;
+
+		var name = $("#tname"+id).val();
+        var sex_val = $("input[name='sex"+id+"']:checked").val();
+        var hobby_val = '';
+        $("input[name='hobby"+id+"']:checked").each(function(){
+            hobby_val+=$(this).val()+' ';
+        });
+        var addr =$("select[name='addr2"+id+"']").val();
+        
+        $("#td2"+id).html(name);
+        $("#td3"+id).html(sex_val);
+        $("#td4"+id).html(hobby_val);
+        $("#td5"+id).html(addr);
+        var a1 = '<a href="javascript:testdelete2('+id+')">删除</a>&nbsp;&nbsp;';
+        a1 += '<a href="javascript:testupdate2('+id+')">修改</a>';
+        $("#td6"+id).html(a1);
+	}
+	function testselect2(){
+		$('tbody tr').css('background','');
+// 		var arr = $('#tr'+id).serializeArray();
+// 		var i2 = arr[0].value;
+// 		var i3 = arr[1].value;
+		var i2 = $("input[name='name2']").val();
+        var i3 = $("select[name='addr2']").val();
+        $('tbody tr').each(function(index, domEle){
+        	var name=$(this).find('td:eq(1)').html();
+        	var addr=$(this).find('td:eq(4)').html();
+        	var b1 = false;
+            var b2 = false;
+            if (i2=='' || name.indexOf(i2)>-1) {
+                b1 = true;
+            }
+            if (i3=='' || addr==i3) {
+                b2 = true;
+            }
+            if (b1 && b2) {
+            	$(this).css('background','red');
+            }
+        });
+	}
+	</script>
+</body>
+</html>

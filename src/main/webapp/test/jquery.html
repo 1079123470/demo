@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">*{font-weight: bold;}</style>
+<!--  <script type="text/text/javascript">
+   layui.use('carousel', function(){}
+</script>  -->
+<script type="text/javascript" src="../js/jquery-3.3.1.js"></script><!-- 看html文件与js文件的相对位置来决定前边省略几级 -->
+<link rel="stylesheet" href="../js/layui/css/layui.css"  media="all">
+<script type="text/javascript" src="../js/layui/layui.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+  $("p").click(function(){
+  $(this).hide();
+  });
+});
+</script>
+</head>
+<body>
+<div class="layui-carousel" name="text1">
+  <div><img src=""></div>
+  <div>aaaaaaaa</div>
+</div>
+<p>If you click on me, I will disappear.</p>
+<p>如果您点击我，我会消失。</p>
+<p>点击我，我会消失。</p>
+<p>也要点击我哦。</p>
+</body>
+</html>
